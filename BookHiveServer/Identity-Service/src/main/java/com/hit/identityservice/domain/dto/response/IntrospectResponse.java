@@ -6,10 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class AuthenticationResponse {
-    private String token;
-    boolean authenticated;
+public class IntrospectResponse {
+    boolean valid = true;
 }

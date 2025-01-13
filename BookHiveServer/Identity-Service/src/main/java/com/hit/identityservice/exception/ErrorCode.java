@@ -5,8 +5,8 @@ public enum ErrorCode {
     USER_EXISTED(false, "User existed"),
     USER_NOT_EXISTED(false, "User is not exist"),
     USERNAME_INVALID(false,"Username is invalid" ),
-    PASSWORD_INVALID(false, "Password must be at least 8 characters");
-
+    PASSWORD_INVALID(false, "Password must be at least 8 characters"),
+    UNAUTHENTICATED(false, "Login failed, please double-check email or password");
 
     private final boolean success;
     private final String message;

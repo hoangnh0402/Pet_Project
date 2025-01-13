@@ -1,4 +1,4 @@
-package com.hit.identityservice.domain.dto.response;
+package com.hit.identityservice.domain.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,10 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class AuthenticationResponse {
+public class IntrospectRequest {
     private String token;
-    boolean authenticated;
 }
