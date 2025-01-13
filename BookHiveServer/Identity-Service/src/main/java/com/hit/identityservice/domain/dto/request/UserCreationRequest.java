@@ -1,58 +1,32 @@
 package com.hit.identityservice.domain.dto.request;
 
-import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserCreationRequest {
     @NotNull
+    @Pattern(regexp="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$", message="USERNAME_INVALID")
     private String email;
+
     @NotNull
+    @Size(min = 8, message = "PASSWORD_INVALID")
     private String password;
+
     @NotNull
     private String firstName;
+
     @NotNull
     private String lastName;
+
     @NotNull
     private LocalDate birthDate;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
 }

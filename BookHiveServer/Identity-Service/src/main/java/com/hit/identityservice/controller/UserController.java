@@ -2,11 +2,14 @@ package com.hit.identityservice.controller;
 
 import com.hit.identityservice.domain.dto.request.UserCreationRequest;
 import com.hit.identityservice.domain.dto.request.UserUpdateRequest;
+import com.hit.identityservice.domain.dto.response.ApiResponse;
+import com.hit.identityservice.domain.dto.response.UserResponse;
 import com.hit.identityservice.domain.entity.User;
 import com.hit.identityservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,8 +23,10 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public User createUser(@RequestBody UserCreationRequest request) {
-        return userService.createUser(request);
+    public ApiResponse<User> createUser(@RequestBody @Valid UserCreationRequest request) {
+        ApiResponse<User> apiResponse = new ApiResponse<>();
+        apiResponse.setData(userService.createUser(request));
+        return apiResponse;
     }
 
     @GetMapping("/getAll")
@@ -30,12 +35,12 @@ public class UserController {
     }
 
     @GetMapping("/getUserByID/{userID}")
-    public User getUserById(@PathVariable String userID) {
+    public UserResponse getUserById(@PathVariable String userID) {
         return userService.getUserById(userID);
     }
 
     @PutMapping("/updateUser/{userID}")
-    public User updateUser(@PathVariable String userID, @RequestBody UserUpdateRequest request) {
+    public UserResponse updateUser(@PathVariable String userID, @RequestBody UserUpdateRequest request) {
         return userService.updateUser(userID, request);
     }
 

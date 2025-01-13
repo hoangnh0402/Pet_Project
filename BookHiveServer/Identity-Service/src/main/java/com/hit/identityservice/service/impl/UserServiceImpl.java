@@ -2,35 +2,35 @@ package com.hit.identityservice.service.impl;
 
 import com.hit.identityservice.domain.dto.request.UserCreationRequest;
 import com.hit.identityservice.domain.dto.request.UserUpdateRequest;
+import com.hit.identityservice.domain.dto.response.UserResponse;
 import com.hit.identityservice.domain.entity.User;
+import com.hit.identityservice.domain.mapper.UserMapper;
+import com.hit.identityservice.exception.AppException;
+import com.hit.identityservice.exception.ErrorCode;
 import com.hit.identityservice.repository.UserRepository;
 import com.hit.identityservice.service.UserService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
     public User createUser(UserCreationRequest request) {
-        User user = new User();
+        if(userRepository.existsByEmail(request.getEmail()))
+            throw new AppException(ErrorCode.USER_EXISTED);
 
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setBirthDate(request.getBirthDate());
-
+        User user = userMapper.toUser(request);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         return userRepository.save(user);
     }
 
@@ -40,20 +40,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(String userID) {
-        return userRepository.findById(userID).orElseThrow(() -> new RuntimeException("User not found"));
+    public UserResponse getUserById(String userID) {
+        return userMapper.toUserResponse(userRepository.findById(userID).orElseThrow(() -> new RuntimeException("User not found")));
     }
 
     @Override
-    public User updateUser(String userID, UserUpdateRequest request) {
-        User user = getUserById(userID);
-
-        user.setPassword(request.getPassword());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setBirthDate(request.getBirthDate());
-
-        return userRepository.save(user);
+    public UserResponse updateUser(String userID, UserUpdateRequest request) {
+        User user = userRepository.findById(userID).orElseThrow(() -> new RuntimeException("User not found"));
+        userMapper.updateUser(user, request);
+        return userMapper.toUserResponse(userRepository.save(user));
     }
 
     @Override

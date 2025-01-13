@@ -1,17 +1,15 @@
 package com.hit.identityservice.domain.dto.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdateRequest {
+@AllArgsConstructor
+@Builder
+public class AuthenticationRequest {
+    private String email;
     private String password;
-    private String firstName;
-    private String lastName;
-    private LocalDate birthDate;
 }
