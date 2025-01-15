@@ -6,10 +6,11 @@ import com.hit.identityservice.domain.dto.response.ApiResponse;
 import com.hit.identityservice.domain.dto.response.UserResponse;
 import com.hit.identityservice.domain.entity.User;
 import com.hit.identityservice.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+
 import java.util.List;
 
 @RestController
